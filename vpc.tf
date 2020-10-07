@@ -3,8 +3,8 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_subnet" "main" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.1.0/24"
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.1.0/24"
   availability_zone = "ap-northeast-1a"
 }
 
@@ -30,9 +30,9 @@ resource "aws_security_group" "allows_tls" {
 }
 
 resource "aws_vpc_endpoint" "ecr" {
-  vpc_id       = aws_vpc.main.id
-  subnet_ids   = [aws_subnet.main.id]
-  service_name = "com.amazonaws.ap-northeast-1.ecr.dkr"
+  vpc_id            = aws_vpc.main.id
+  subnet_ids        = [aws_subnet.main.id]
+  service_name      = "com.amazonaws.ap-northeast-1.ecr.dkr"
   vpc_endpoint_type = "Interface"
   security_group_ids = [
     aws_security_group.allows_tls.id
@@ -53,8 +53,8 @@ EOF
 }
 
 resource "aws_vpc_endpoint" "s3" {
-  vpc_id       = aws_vpc.main.id
-  service_name = "com.amazonaws.ap-northeast-1.s3"
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.ap-northeast-1.s3"
   vpc_endpoint_type = "Gateway"
 
   policy = <<EOF
