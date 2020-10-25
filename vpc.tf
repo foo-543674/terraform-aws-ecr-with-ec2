@@ -50,6 +50,27 @@ resource "aws_security_group" "allows_http" {
   }
 }
 
+resource "aws_security_group" "for_lb" {
+  name        = "for_lb"
+  description = "for loadbalancer"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "TLS from public"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_vpc_endpoint" "ecr" {
   vpc_id            = aws_vpc.main.id
   subnet_ids        = [aws_subnet.main.id]
