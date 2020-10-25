@@ -29,6 +29,27 @@ resource "aws_security_group" "allows_tls" {
   }
 }
 
+resource "aws_security_group" "allows_http" {
+  name        = "allow_http"
+  description = "Allow HTTP inbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "HTTP from VPC"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.main.cidr_block]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_vpc_endpoint" "ecr" {
   vpc_id            = aws_vpc.main.id
   subnet_ids        = [aws_subnet.main.id]
